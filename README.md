@@ -5,23 +5,23 @@ Node.js script to transfer DynamoDB table to MySQL
 
 All you need to do is create config.json file in that same directory as such:
 
-{
-	"aws":
 	{
-		"key": "AWS_ACCESS_KEY",
-		"secret": "AWS_SECRET_KEY",
-		"region": "AWS_REGION",
-		"limit": DYNAMODB_LIMIT_ROWS_PER_READ
-	},
-	"mysql":
-	{
-		"host": "MYSQL_HOST",
-		"port": "MYSQL_PORT",
-		"user": "MYSQL_USER",
-		"password": "MYSQL_PASSWORD",
-		"database": "MYSQL_DATABASE_NAME"
+		"aws":
+		{
+			"key": "AWS_ACCESS_KEY",
+			"secret": "AWS_SECRET_KEY",
+			"region": "AWS_REGION",
+			"limit": DYNAMODB_LIMIT_ROWS_PER_READ
+		},
+		"mysql":
+		{
+			"host": "MYSQL_HOST",
+			"port": "MYSQL_PORT",
+			"user": "MYSQL_USER",
+			"password": "MYSQL_PASSWORD",
+			"database": "MYSQL_DATABASE_NAME"
+		}
 	}
-}
 
 The output is executed sql.
 
