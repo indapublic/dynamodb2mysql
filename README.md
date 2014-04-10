@@ -50,8 +50,4 @@ You'll need to install a few modules, including:
 * commander
 * mysql
 
-	npm install aws-sdk commander mysql
-
-should do it.
-
 Big thanks to [DynamoDBtoCSV](https://github.com/edasque/DynamoDBtoCSV) and [Dynamo-archive](https://github.com/yegor256/dynamo-archive) repositories for knowledge
