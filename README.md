@@ -50,7 +50,7 @@ You'll need to install a few modules, including:
 * commander
 * mysql
 
-	npm install aws-sdk commander mysql
+npm install aws-sdk commander mysql
 
 should do it.
 
