@@ -10,8 +10,6 @@ aws.config.update({
 
 var ddb = new aws.DynamoDB();
 
-var iKnowTheHeaders = false;
-
 program.version('0.0.1')
 .option('-s, --source [tablename]', 'Add the source (DynamoDB) table')
 .option('-d, --destination [tablename]', 'Add the destination (MySQL) table')
