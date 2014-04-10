@@ -37,8 +37,10 @@ var transfer = function (items) {
 			data[propertyName.replace(' ', '')] = value.replace(/\'/g, "'\\''");
 		}
 		var statement = connection.query('INSERT INTO ' + program.destination + ' SET ?', data, function (err, result) {
-			if (err)
+			if (err) {
+				console.log(err);
 				throw err;
+			}
 		});
 		console.log(statement.sql);
 	};
