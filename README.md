@@ -25,23 +25,6 @@ All you need to do is create config.json file in that same directory as such:
 
 The output is executed sql.
 
-Usage
--------------------
-
-typically, to use you'd run:
-
-	node dynamodb2mysql.js -s dynamodb_table_name -d mysql_table_name > output.sql
-
-Full syntax is:
-
-	node dynamodb2mysql [options]
-
-	Options:
-		-h, --help                     output usage information
-		-V, --version                  output the version number
-		-s, --source [tablename]       Add the source (DynamoDB) table
-		-d, --destination [tablename]  Add the destination (MySQL) table
-
 Pre-requisites
 --------------
 
@@ -49,5 +32,12 @@ You'll need to install a few modules, including:
 * aws-sdk
 * commander
 * mysql
+
+Usage
+-------------------
+
+typically, to use you'd run:
+
+	node dynamodb2mysql.js -s dynamodb_table_name -d mysql_table_name > output.sql
 
 Big thanks to [DynamoDBtoCSV](https://github.com/edasque/DynamoDBtoCSV) and [Dynamo-archive](https://github.com/yegor256/dynamo-archive) repositories for knowledge
