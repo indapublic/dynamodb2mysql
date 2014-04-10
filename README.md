@@ -30,7 +30,7 @@ Usage
 
 typically, to use you'd run:
 
-	node dynamoDBtoCSV.js -t Hourly_ZEDO_Impressions_by_IP > output.csv
+	node dynamodb2mysql.js -s dynamodb_table_name -d mysql_table_name > output.sql
 
 Full syntax is:
 
