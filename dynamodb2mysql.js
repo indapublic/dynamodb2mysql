@@ -11,8 +11,9 @@ aws.config.update({
 var ddb = new aws.DynamoDB();
 
 program.version('0.0.1')
-.option('-s, --source [tablename]', 'Add the source (DynamoDB) table')
-.option('-d, --destination [tablename]', 'Add the destination (MySQL) table')
+.option('-s, --source [tablename]', 'The source (DynamoDB) table')
+.option('-d, --destination [tablename]', 'The destination (MySQL) table')
+.option('--destroy', 'Destroy source (DynamoDB) table after complete')
 .parse(process.argv);
 
 if (!program.source || !program.destination) {
@@ -46,6 +47,17 @@ var transfer = function (items) {
 	};
 };
 
+var finish = function () {
+	connection.end();
+	if (program.destroy)
+		ddb.deleteTable({
+			TableName: program.source
+		}, function (err, data) {
+			if (err)
+				console.dir(err);
+		});
+};
+
 var scan = function (query) {
 	ddb.scan(query, function (err, data) {
 		if (err)
@@ -56,7 +68,7 @@ var scan = function (query) {
 				query.ExclusiveStartKey = data.LastEvaluatedKey;
 				scan(query);
 			} else
-				connection.end();
+				finish();
 		};
 	});
 };
@@ -69,9 +81,8 @@ var query = {
 ddb.describeTable({
 	TableName: program.source
 }, function (err, data) {
-	if (err !== null) {
-		throw err;
-	}
+	if (err)
+		console.dir(err);
 	if (data == null) {
 		throw 'Table ' + program.source + ' not found in DynamoDB';
 	}

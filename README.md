@@ -36,8 +36,16 @@ You'll need to install a few modules, including:
 Usage
 -------------------
 
-typically, to use you'd run:
+typically, to use you should run:
 
 	node dynamodb2mysql.js -s dynamodb_table_name -d mysql_table_name > output.sql
+
+Full options list is:
+
+    -h, --help                     output usage information
+    -V, --version                  output the version number
+    -s, --source [tablename]       The source (DynamoDB) table
+    -d, --destination [tablename]  The destination (MySQL) table
+    --destroy                      Destroy source (DynamoDB) table after complete (optional)
 
 Big thanks to [DynamoDBtoCSV](https://github.com/edasque/DynamoDBtoCSV) and [Dynamo-archive](https://github.com/yegor256/dynamo-archive) repositories for knowledge
