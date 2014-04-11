@@ -46,6 +46,6 @@ Full options list is:
     -V, --version                  output the version number
     -s, --source [tablename]       The source (DynamoDB) table
     -d, --destination [tablename]  The destination (MySQL) table
-    --destroy                      Destroy source (DynamoDB) table after complete (optional)
+    --destroy                      Destroy source (DynamoDB) table on transfer complete (optional)
 
 Big thanks to [DynamoDBtoCSV](https://github.com/edasque/DynamoDBtoCSV) and [Dynamo-archive](https://github.com/yegor256/dynamo-archive) repositories for knowledge
