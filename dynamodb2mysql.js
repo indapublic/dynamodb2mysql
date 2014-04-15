@@ -17,6 +17,10 @@ program.version('0.0.1')
 .option('--notify', 'Notify by Amazon SES on transfer complete')
 .parse(process.argv);
 
+process.on('exit', function() {
+	sendNotify('DynamoDB2MYSQL Notification', 'Process exit');
+});
+
 if (!program.source || !program.destination) {
 	console.log('You must specify a source and destination tables');
 	program.outputHelp();
