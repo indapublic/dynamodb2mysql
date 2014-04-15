@@ -23,7 +23,7 @@ All you need to do is create config.json file in that same directory as such:
 		}
 	}
 
-If you want to notify on transfer complete, you should add section "notify" in config.json as such:
+If you want to notify on transfer complete or execution fails, you should add section "notify" in config.json as such:
 
 	{
 		"aws":
