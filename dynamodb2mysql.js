@@ -95,11 +95,11 @@ var transferComplete = function () {
 
 var scan = function (query) {
 	ddb.scan(query, function (err, data) {
-		if (err)
+		if (err) {
 			sendNotify('DynamoDB2MYSQL Notification', 'Scan Exception');
 			console.dir(err);
 			throw err;
-		else {
+		} else {
 			transfer(data.Items);
 			if (data.LastEvaluatedKey) {
 				query.ExclusiveStartKey = data.LastEvaluatedKey;
