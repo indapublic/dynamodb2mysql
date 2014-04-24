@@ -77,7 +77,7 @@ var transfer = function (items) {
 				throw err;
 			}
 		});
-		console.log(statement.sql);
+		console.log(statement.sql + ";");
 	};
 };
 
