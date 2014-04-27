@@ -1,0 +1,22 @@
+{
+	"aws":
+	{
+		"key": "",
+		"secret": "",
+		"region": "",
+		"limit": 0
+	},
+	"mysql":
+	{
+		"host": "",
+		"port": "",
+		"user": "",
+		"password": "",
+		"database": ""
+	},
+	"notify":
+	{
+		"sender": "",
+		"recipient": ""
+	}
+}

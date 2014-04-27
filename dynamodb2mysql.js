@@ -15,11 +15,8 @@ program.version('0.0.1')
 .option('-d, --destination [tablename]', 'The destination (MySQL) table')
 .option('--destroy', 'Destroy source (DynamoDB) table on transfer complete')
 .option('--notify', 'Notify by Amazon SES on transfer complete')
+.option('-e, --execute [filename]', 'The SQL file will be executed on transfer complete')
 .parse(process.argv);
-
-process.on('exit', function() {
-	sendNotify('DynamoDB2MYSQL Notification', 'Process exit');
-});
 
 if (!program.source || !program.destination) {
 	console.log('You must specify a source and destination tables');
@@ -32,8 +29,13 @@ var connection = mysql.createConnection({
 	host: config.mysql.host,
 	user: config.mysql.user,
 	password: config.mysql.password,
-	database: config.mysql.database
+	database: config.mysql.database,
+	multipleStatements: true
 });
+
+var getSubject = function() {
+	return 'Transfer from "' + program.source + '"" to "' + program.destination + '"';
+}
 
 var sendNotify = function (subject, message) {
 	var params = {
@@ -72,7 +74,7 @@ var transfer = function (items) {
 		}
 		var statement = connection.query('INSERT INTO ' + program.destination + ' SET ?', data, function (err, result) {
 			if (err) {
-				sendNotify('DynamoDB2MYSQL Notification', 'Transfer Exception');
+				sendNotify('DynamoDB2MYSQL Notification', getSubject() + ' Exception');
 				console.dir(err);
 				throw err;
 			}
@@ -82,25 +84,50 @@ var transfer = function (items) {
 };
 
 var transferComplete = function () {
-	connection.end();
-	if (program.destroy)
-		ddb.deleteTable({
-			TableName: program.source
-		}, function (err, data) {
-			if (err) {
-				sendNotify('DynamoDB2MYSQL Notification', 'deleteTable Exception');
-				console.dir(err);
-				throw err;
-			} else
-				if (program.notify)
-					sendNotify('DynamoDB2MYSQL Notification', 'Transfer Complete');
-		});
+	connection.end(function() {
+		if (program.execute) {
+			var fs = require('fs');
+			require.extensions['.sql'] = function (module, filename) {
+				module.exports = fs.readFileSync(filename, 'utf8');
+			};
+			var sql_instructions = require('./' + program.execute);
+			var connection_2 = mysql.createConnection({
+				host: config.mysql.host,
+				user: config.mysql.user,
+				password: config.mysql.password,
+				database: config.mysql.database,
+				multipleStatements: true
+			});
+			var statement_2 = connection_2.query(sql_instructions, {}, function (err, result) {
+				connection_2.end();
+				if (err) {
+					sendNotify('DynamoDB2MYSQL Notification', getSubject() + ' SQL Execution Exception');
+					console.dir(err);
+					throw err;
+				}
+			});
+		};
+		if (program.destroy) {
+			ddb.deleteTable({
+				TableName: program.source
+			}, function (err, data) {
+				if (err) {
+					sendNotify('DynamoDB2MYSQL Notification', 'deleteTable Exception');
+					console.dir(err);
+					throw err;
+				} else if (program.notify)
+					sendNotify('DynamoDB2MYSQL Notification', getSubject() + ' & source destroy complete');
+			})
+		} else if (program.notify) {
+			sendNotify('DynamoDB2MYSQL Notification', getSubject() + ' complete');
+		}
+	});
 };
 
 var scan = function (query) {
 	ddb.scan(query, function (err, data) {
 		if (err) {
-			sendNotify('DynamoDB2MYSQL Notification', 'Scan Exception');
+			sendNotify('DynamoDB2MYSQL Notification', getSubject() + ' Scan Exception');
 			console.dir(err);
 			throw err;
 		} else {
@@ -115,15 +142,12 @@ var scan = function (query) {
 };
 
 var query = {
-	'TableName': program.source,
-	'Limit': 1000
+	'TableName': program.source
 };
 
-ddb.describeTable({
-	TableName: program.source
-}, function (err, data) {
+ddb.describeTable(query, function (err, data) {
 	if (err) {
-		sendNotify('DynamoDB2MYSQL Notification', 'describeTable Exception');
+		sendNotify('DynamoDB2MYSQL Notification', getSubject() + ' describeTable Exception');
 		console.dir(err);
 		throw err;
 	}

@@ -74,6 +74,7 @@ Full options list is:
     -s, --source [tablename]       The source (DynamoDB) table
     -d, --destination [tablename]  The destination (MySQL) table
     --destroy                      Destroy source (DynamoDB) table on transfer complete
-    --notify                       Notify by Amazon SES on transfer complete or execution fails
+    --notify                       Notify by Amazon SES on transfer complete
+    -e, --execute [filename]       The SQL file will be executed on transfer complete
 
 Big thanks to [DynamoDBtoCSV](https://github.com/edasque/DynamoDBtoCSV) and [Dynamo-archive](https://github.com/yegor256/dynamo-archive) repositories for knowledge
