@@ -76,7 +76,7 @@ var transfer = function (items) {
 			if (err) {
 				sendNotify('DynamoDB2MYSQL Notification', getSubject() + ' Exception');
 				console.dir(err);
-				throw err;
+				//throw err;
 			}
 		});
 		console.log(statement.sql + ";");
